@@ -1,0 +1,112 @@
+//===========================================================================================================
+// Name        : MovingAverage.cpp
+// Author      : Nash Truby
+//===========================================================================================================
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector <double> movingAverage(int windowsize, vector <double> output);
+int main() 
+{
+  //Declaring variables
+  int windowSize = 0, i = 0;
+  double temp = 0;
+  vector <double> input;
+
+  //Asking user to input a window size
+  cout << "Please enter a positive integer for a window size: " << endl;
+  cin >> windowSize;
+
+  //Loop for wrong window size input
+  while(cin.fail() || windowSize == 0 || windowSize < 0)
+  {
+    if(cin.fail())
+    {
+      cout << "Incorrect input for window size. Please try again: ";
+    }
+
+    else if(windowSize == 0)
+    {
+      cout << "Cannot use 0 as window size. Please try again: ";
+    }
+    
+    else if(windowSize < 0)
+    {
+      cout << "Window size must be a positive integer. Please try again: ";
+    }
+
+    cin.clear();
+    cin.ignore(256,'\n');
+    cin >> windowSize;
+  }
+
+  //Ignores possible characters after integer input
+  cin.ignore(256,'\n');
+
+  //Asking user for array digits
+  cout << "\nNow enter digits for array. Once finished enter any non digit character." << endl;
+
+  //Loop used to add digits to array until a non digit character is enetered
+  while(cin >> temp)
+  {
+    input.push_back(temp);
+  }
+  
+  //Making input array equal the result of moving average function (output array)
+  input = movingAverage(windowSize, input);
+
+  cout << "\nOutput: \n" << "[";
+
+  //Loop prints output
+  for(i = 0; i < input.size(); i++)
+  {
+    cout << input[i];
+
+    if(i != input.size()-1)
+    {
+      cout << ", ";
+    }
+  }
+
+  cout << "]";
+
+  return 0;
+} 
+
+/*****************
+* Moving Average *
+*****************/
+vector <double> movingAverage(int windowSize, vector <double> input)
+{
+  //Declaring variables
+  vector <double> output;
+  double sum = 0, avg = 0;
+
+  //Loop used to iterate through array and calculate the average of each location
+  for(int i = 0; i < input.size(); i++)
+  { 
+    //Sum calculated through each iteration of input array
+    sum += input[i];
+
+    //If i + 1 is >= to window size then calculate new sum and divide by the window size
+    if(i+1 >= windowSize)
+    {
+      sum -= input[i-windowSize];
+      
+      avg = sum / windowSize;  
+    }
+   
+    //If iteration is < the window size calculate the average by dividing sum by i + 1
+    else
+    {
+      avg = sum / (i+1);
+    }
+
+    //Puts average into output array
+    output.push_back(avg);
+  }
+
+  return output;
+}
