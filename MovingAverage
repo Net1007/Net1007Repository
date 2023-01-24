@@ -41,7 +41,7 @@ int main()
     cin.ignore(256,'\n');
     cin >> windowSize;
   }
-
+  //branch change
   //Ignores possible characters after integer input
   cin.ignore(256,'\n');
 
